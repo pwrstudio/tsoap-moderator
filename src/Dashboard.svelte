@@ -19,10 +19,15 @@
   // COMPONENTS
   import Chat from "./Chat.svelte";
   import UserList from "./UserList.svelte";
+  import BlackList from "./BlackList.svelte";
 
   let localPlayers = {};
+  let blackList = [];
   let chatMessages = [];
   let moveQ = [];
+
+  // STORES
+  import { gameRoom, chatRoom } from "./stores.js";
 
   // COLYSEUS
   // const client = new Colyseus.Client("ws://localhost:2567");
@@ -51,74 +56,76 @@
 
   onMount(async () => {
     // => GAME ROOM
-    client
-      .joinOrCreate("game", {
+    gameRoom.set(
+      await client.joinOrCreate("game", {
         moderator: true,
         uuid: chance.guid(),
         name: "Moderator",
         avatar: 0,
         tint: "0x000000"
       })
-      .then(gameRoom => {
-        // REMOVE
-        gameRoom.state.players.onRemove = function(player, sessionId) {
-          console.log("REMOVE");
-          console.dir(localPlayers[sessionId]);
-          delete localPlayers[sessionId];
-          // FORCE RENDER
-          localPlayers = localPlayers;
-        };
+    );
 
-        // ADD
-        gameRoom.state.players.onAdd = function(player, sessionId) {
-          localPlayers[sessionId] = createPlayer(player, sessionId);
-        };
+    // GAME ROOM: REMOVE
+    $gameRoom.state.players.onRemove = function(player, sessionId) {
+      console.log("REMOVE");
+      console.dir(localPlayers[sessionId]);
+      delete localPlayers[sessionId];
+      // FORCE RENDER
+      localPlayers = localPlayers;
+    };
 
-        // STATE CHANGE
-        gameRoom.state.players.onChange = function(player, sessionId) {
-          if (player.path.waypoints.length > 0) {
-            moveQ[sessionId] = player.path.waypoints;
-          }
-        };
+    // GAME ROOM: ADD
+    $gameRoom.state.players.onAdd = function(player, sessionId) {
+      localPlayers[sessionId] = createPlayer(player, sessionId);
+    };
 
-        // ERROR
-        gameRoom.onError((code, message) => {
-          console.error("!!! COLYSEUS ERROR:");
-          console.error(message);
-        });
-      })
-      .catch(e => {
-        console.log("GAME ROOM: JOIN ERROR", e);
-      });
+    // GAME ROOM: PLAYER STATE CHANGE
+    $gameRoom.state.players.onChange = function(player, sessionId) {
+      if (player.path.waypoints.length > 0) {
+        moveQ[sessionId] = player.path.waypoints;
+      }
+    };
+
+    // GAME ROOM: Blacklist STATE CHANGE
+    $gameRoom.state.blacklist.onAdd = function(bannedIP, sessionId) {
+      blackList = [...blackList, bannedIP];
+    };
+
+    // GAME ROOM: Blacklist STATE CHANGE
+    $gameRoom.state.blacklist.onRemove = function(unBannedIP, sessionId) {
+      blackList = blackList.filter(ip => ip.address !== unBannedIP.address);
+    };
+
+    // GAME ROOM: ERROR
+    $gameRoom.onError((code, message) => {
+      console.error("!!! COLYSEUS ERROR:");
+      console.error(message);
+    });
 
     // => CHAT ROOM
-    client
-      .joinOrCreate("chat")
-      .then(chatRoom => {
-        // CHANGE
-        chatRoom.onStateChange(state => {
-          chatMessages = state.messages;
-        });
+    chatRoom.set(await client.joinOrCreate("chat"));
 
-        // ERROR
-        chatRoom.onError((code, message) => {
-          console.error(message);
-        });
+    // CHAT ROOM: CHANGE
+    $chatRoom.onStateChange(state => {
+      chatMessages = state.messages;
+    });
 
-        // SUBMIT CHAT
-        // submitChat = event => {
-        //   chatRoom.send("submit", {
-        //     msgId: chance.guid(),
-        //     uuid: $localUserUUID,
-        //     name: $localUserName,
-        //     text: event.detail.text,
-        //     tint: $localUserTint
-        //   });
-        // };
-      })
-      .catch(e => {
-        console.log("CHAT ROOM: JOIN ERROR", e);
-      });
+    // CHAT ROOM: ERROR
+    $chatRoom.onError((code, message) => {
+      console.error(message);
+    });
+
+    // SUBMIT CHAT
+    // submitChat = event => {
+    //   chatRoom.send("submit", {
+    //     msgId: chance.guid(),
+    //     uuid: $localUserUUID,
+    //     name: $localUserName,
+    //     text: event.detail.text,
+    //     tint: $localUserTint
+    //   });
+    // };
   });
 </script>
 
@@ -129,33 +136,50 @@
     box-sizing: border-box;
   }
 
+  .dashboard {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .userlist-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
+    width: 100%;
+    height: 50vh;
+    border-bottom: 1px solid grey;
     padding: 20px;
     background: lightgray;
   }
 
   .chat-container {
-    position: fixed;
-    top: 0;
-    left: 50%;
+    border-right: 1px solid grey;
     width: 50%;
-    height: 100%;
+    height: 50vh;
+    padding: 20px;
+    background: #e4e4e4;
+  }
+
+  .blacklist-container {
+    width: 50%;
+    height: 50vh;
     padding: 20px;
     background: #e4e4e4;
   }
 </style>
 
-<!-- USER LIST -->
-<div class="userlist-container">
-  <UserList playerList={localPlayers} />
-</div>
+<div class="dashboard">
 
-<!-- CHAT -->
-<div class="chat-container">
-  <Chat {chatMessages} />
+  <!-- USER LIST -->
+  <div class="userlist-container">
+    <UserList playerList={localPlayers} />
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-container">
+    <Chat {chatMessages} />
+  </div>
+
+  <!-- BLACKLIST -->
+  <div class="blacklist-container">
+    <BlackList {blackList} />
+  </div>
+
 </div>

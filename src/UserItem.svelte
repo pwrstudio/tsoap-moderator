@@ -12,6 +12,21 @@
   export let player = {};
   export let header = false;
 
+  let banned = false;
+
+  // STORES
+  import { gameRoom, chatRoom } from "./stores.js";
+
+  const addToBlackList = () => {
+    // $chatRoom.send("blacklist", {
+    //   ip: player.ip
+    // });
+    $gameRoom.send("blacklist", {
+      address: player.ip
+    });
+    banned = true;
+  };
+
   console.dir(player);
 </script>
 
@@ -71,6 +86,15 @@
       font-weight: bold;
     }
   }
+
+  .ban {
+    background: lightcoral;
+    cursor: pointer;
+  }
+
+  .banned {
+    background: lightgreen;
+  }
 </style>
 
 <div class="user-item" class:header transition:fade>
@@ -82,7 +106,7 @@
     <div>SessionId</div>
     <div>IP</div>
     <div>(x,y)</div>
-    <div>Ban</div>
+    <div>Ban IP</div>
   {:else}
     <div class="color-code-outer">
       <div
@@ -94,6 +118,10 @@
     <div>{player.id}</div>
     <div>{player.ip}</div>
     <div>{player.x}, {player.y}</div>
-    <div />
+    <div>
+      <button class="ban" class:banned on:click={addToBlackList}>
+        {#if banned}Done{:else}Ban{/if}
+      </button>
+    </div>
   {/if}
 </div>
