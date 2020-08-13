@@ -14,6 +14,22 @@
 
   // PROPS
   export let message = {};
+
+  // STORES
+  import { chatRoom } from "./stores.js";
+
+  console.dir(message);
+
+  // VARIABLES
+  let removed = false;
+
+  const removeMessage = () => {
+    console.dir(message.msgId);
+    $chatRoom.send("remove", {
+      msgId: message.msgId
+    });
+    removed = true;
+  };
 </script>
 
 <style lang="scss">
@@ -52,6 +68,17 @@
       font-size: $font_size_normal;
     }
   }
+
+  .remove {
+    font-size: $font_size_small;
+    margin-left: 10px;
+    background: lightcoral;
+    cursor: pointer;
+  }
+
+  .removed {
+    background: lightgreen;
+  }
 </style>
 
 <div class="chat-message" transition:fade>
@@ -61,6 +88,10 @@
       style={'background-color:' + get(message, 'tint', '0XFF0000').replace('0X', '#')} />
     <span class="name">{message.name}</span>
     <span class="date">{formattedDate()}</span>
+    <button class="remove" class:removed on:click={removeMessage}>
+      {#if removed}Done{:else}Remove{/if}
+    </button>
+
   </div>
   <div class="body">{message.text}</div>
 </div>

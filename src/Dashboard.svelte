@@ -31,7 +31,8 @@
 
   // COLYSEUS
   // const client = new Colyseus.Client("ws://localhost:2567");
-  const client = new Colyseus.Client("ws://18.194.21.39:2567");
+  // const client = new Colyseus.Client("ws://18.194.21.39:2567");
+  const client = new Colyseus.Client("wss://scarmonger.xyz");
 
   const colorTrans = ["WHITE", "BLACK", "YELLOW", "RED", "GREEN", "BLUE"];
 
@@ -129,39 +130,59 @@
   });
 </script>
 
-<style lang="scss" global>
+<style lang="scss">
   @import "./variables.scss";
 
   * {
     box-sizing: border-box;
   }
 
-  .dashboard {
-    display: flex;
-    flex-wrap: wrap;
+  * {
+    box-sizing: border-box;
   }
 
   .userlist-container {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 50vh;
     border-bottom: 1px solid grey;
     padding: 20px;
     background: lightgray;
+    overflow-y: scroll;
   }
 
   .chat-container {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    float: left;
     border-right: 1px solid grey;
     width: 50%;
     height: 50vh;
     padding: 20px;
     background: #e4e4e4;
+    overflow-y: scroll;
   }
 
   .blacklist-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    float: left;
     width: 50%;
     height: 50vh;
     padding: 20px;
     background: #e4e4e4;
+    overflow-y: scroll;
+  }
+
+  .header {
+    font-weight: bold;
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 12px;
+    padding-bottom: 5px;
   }
 </style>
 
@@ -179,6 +200,7 @@
 
   <!-- BLACKLIST -->
   <div class="blacklist-container">
+    <div class="header">Black list</div>
     <BlackList {blackList} />
   </div>
 

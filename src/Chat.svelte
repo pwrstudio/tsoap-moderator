@@ -24,7 +24,7 @@
 </style>
 
 <div class="chat">
-  {#each chatMessages.reverse() as message (message.msgId)}
+  {#each chatMessages as message (message.msgId)}
     <ChatMessage {message} />
   {/each}
 </div>

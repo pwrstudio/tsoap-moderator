@@ -27,7 +27,7 @@ export const formattedDate = (start, end) => {
     const startDate = start ? Date.parse(start) : Date.now();
 
     if (!end) {
-        return format(startDate, "HH:mm:ss");
+        return format(startDate, "HH:mm:ss / dd.MM.yyy");
     }
 
     const endDate = Date.parse(end);
