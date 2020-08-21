@@ -6,116 +6,115 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
-  import { onMount } from "svelte";
-  import * as Colyseus from "colyseus.js";
-  import get from "lodash/get";
-  import { fade, fly } from "svelte/transition";
-  import Chance from "chance";
-  const chance = new Chance();
+  import { onMount } from 'svelte'
+  import * as Colyseus from 'colyseus.js'
+  import get from 'lodash/get'
+  import { fade, fly } from 'svelte/transition'
+  import Chance from 'chance'
+  const chance = new Chance()
 
   // GLOBAL
-  import { houseList, KEYBOARD, WIDTH, HEIGHT } from "./global.js";
+  import { houseList, KEYBOARD, WIDTH, HEIGHT } from './global.js'
 
   // COMPONENTS
-  import Chat from "./Chat.svelte";
-  import UserList from "./UserList.svelte";
-  import BlackList from "./BlackList.svelte";
+  import Chat from './Chat.svelte'
+  import UserList from './UserList.svelte'
+  import BlackList from './BlackList.svelte'
 
-  let localPlayers = {};
-  let blackList = [];
-  let chatMessages = [];
-  let moveQ = [];
+  let localPlayers = {}
+  let blackList = []
+  let chatMessages = []
+  let moveQ = []
 
   // STORES
-  import { gameRoom, chatRoom } from "./stores.js";
+  import { gameRoom, chatRoom } from './stores.js'
 
   // COLYSEUS
   // const client = new Colyseus.Client("ws://localhost:2567");
   // const client = new Colyseus.Client("ws://18.194.21.39:2567");
-  const client = new Colyseus.Client("wss://scarmonger.xyz");
+  const client = new Colyseus.Client('wss://gameserver.tsoap.dev')
 
-  const colorTrans = ["WHITE", "BLACK", "YELLOW", "RED", "GREEN", "BLUE"];
+  const colorTrans = ['WHITE', 'BLACK', 'YELLOW', 'RED', 'GREEN', 'BLUE']
 
   // FUNCTIONS
-  let submitChat = () => {};
+  let submitChat = () => {}
 
   // CREATE PLAYER
   const createPlayer = (player, sessionId) => {
-    let avatar = {};
-    avatar.x = player.x;
-    avatar.y = player.y;
-    avatar.waypoints = [];
-    avatar.area = player.area;
-    avatar.tint = player.tint;
-    avatar.name = player.name;
-    avatar.uuid = player.uuid;
-    avatar.ip = player.ip;
-    avatar.connected = player.connected;
-    avatar.id = sessionId;
-    return avatar;
-  };
+    let avatar = {}
+    avatar.x = player.x
+    avatar.y = player.y
+    avatar.waypoints = []
+    avatar.area = player.area
+    avatar.tint = player.tint
+    avatar.name = player.name
+    avatar.uuid = player.uuid
+    avatar.ip = player.ip
+    avatar.connected = player.connected
+    avatar.id = sessionId
+    return avatar
+  }
 
   onMount(async () => {
     // => GAME ROOM
     gameRoom.set(
-      await client.joinOrCreate("game", {
+      await client.joinOrCreate('game', {
         moderator: true,
         uuid: chance.guid(),
-        name: "Moderator",
+        name: 'Moderator',
         avatar: 0,
-        tint: "0x000000"
+        tint: '0x000000',
       })
-    );
+    )
 
-    // GAME ROOM: REMOVE
-    $gameRoom.state.players.onRemove = function(player, sessionId) {
-      console.log("REMOVE");
-      console.dir(localPlayers[sessionId]);
-      delete localPlayers[sessionId];
+    // PLAYER: REMOVE
+    $gameRoom.state.players.onRemove = function (player, sessionId) {
+      console.log('REMOVE')
+      console.dir(localPlayers[sessionId])
+      delete localPlayers[sessionId]
       // FORCE RENDER
-      localPlayers = localPlayers;
-    };
+      localPlayers = localPlayers
+    }
 
-    // GAME ROOM: ADD
-    $gameRoom.state.players.onAdd = function(player, sessionId) {
-      localPlayers[sessionId] = createPlayer(player, sessionId);
-    };
+    // PLAYER: ADD
+    $gameRoom.state.players.onAdd = function (player, sessionId) {
+      localPlayers[sessionId] = createPlayer(player, sessionId)
+    }
 
-    // GAME ROOM: PLAYER STATE CHANGE
-    $gameRoom.state.players.onChange = function(player, sessionId) {
+    // PLAYER:  STATE CHANGE
+    $gameRoom.state.players.onChange = function (player, sessionId) {
       if (player.path.waypoints.length > 0) {
-        moveQ[sessionId] = player.path.waypoints;
+        moveQ[sessionId] = player.path.waypoints
       }
-    };
+    }
 
-    // GAME ROOM: Blacklist STATE CHANGE
-    $gameRoom.state.blacklist.onAdd = function(bannedIP, sessionId) {
-      blackList = [...blackList, bannedIP];
-    };
+    // BLACKLIST: ADD
+    $gameRoom.state.blacklist.onAdd = function (bannedIP, sessionId) {
+      blackList = [...blackList, bannedIP]
+    }
 
-    // GAME ROOM: Blacklist STATE CHANGE
-    $gameRoom.state.blacklist.onRemove = function(unBannedIP, sessionId) {
-      blackList = blackList.filter(ip => ip.address !== unBannedIP.address);
-    };
+    // BLACKLIST: REMOVE
+    $gameRoom.state.blacklist.onRemove = function (unBannedIP, sessionId) {
+      blackList = blackList.filter((ip) => ip.address !== unBannedIP.address)
+    }
 
     // GAME ROOM: ERROR
     $gameRoom.onError((code, message) => {
-      console.error("!!! COLYSEUS ERROR:");
-      console.error(message);
-    });
+      console.error('!!! COLYSEUS ERROR:')
+      console.error(message)
+    })
 
-    // => CHAT ROOM
-    chatRoom.set(await client.joinOrCreate("chat"));
+    // CHAT: REMOVE
+    $gameRoom.state.messages.onRemove = (message) => {
+      const itemIndex = chatMessages.findIndex((m) => m === message)
+      chatMessages.splice(itemIndex, 1)
+      chatMessages = chatMessages
+    }
 
-    // CHAT ROOM: CHANGE
-    $chatRoom.onStateChange(state => {
-      chatMessages = state.messages;
-    });
-
-    // CHAT ROOM: ERROR
-    $chatRoom.onError((code, message) => {
-      console.error(message);
-    });
+    // CHAT: ADD
+    $gameRoom.state.messages.onAdd = (message) => {
+      chatMessages = [...chatMessages, message]
+    }
 
     // SUBMIT CHAT
     // submitChat = event => {
@@ -127,11 +126,11 @@
     //     tint: $localUserTint
     //   });
     // };
-  });
+  })
 </script>
 
 <style lang="scss">
-  @import "./variables.scss";
+  @import './variables.scss';
 
   * {
     box-sizing: border-box;

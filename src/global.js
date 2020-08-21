@@ -24,7 +24,7 @@ export const HEIGHT = 5000;
 
 export const formattedDate = (start, end) => {
 
-    const startDate = start ? Date.parse(start) : Date.now();
+    const startDate = start ? start : Date.now();
 
     if (!end) {
         return format(startDate, "HH:mm:ss / dd.MM.yyy");

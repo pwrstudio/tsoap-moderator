@@ -6,34 +6,34 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
-  import { fade } from "svelte/transition";
-  import get from "lodash/get";
+  import { fade } from 'svelte/transition'
+  import get from 'lodash/get'
 
   // GLOBALS
-  import { formattedDate } from "./global.js";
+  import { formattedDate } from './global.js'
 
   // PROPS
-  export let message = {};
+  export let message = {}
 
   // STORES
-  import { chatRoom } from "./stores.js";
+  import { gameRoom } from './stores.js'
 
-  console.dir(message);
+  console.dir(message)
 
   // VARIABLES
-  let removed = false;
+  let removed = false
 
   const removeMessage = () => {
-    console.dir(message.msgId);
-    $chatRoom.send("remove", {
-      msgId: message.msgId
-    });
-    removed = true;
-  };
+    console.dir(message.msgId)
+    $gameRoom.send('removeChatMessage', {
+      msgId: message.msgId,
+    })
+    removed = true
+  }
 </script>
 
 <style lang="scss">
-  @import "./variables.scss";
+  @import './variables.scss';
 
   .chat-message {
     margin-bottom: 10px;
