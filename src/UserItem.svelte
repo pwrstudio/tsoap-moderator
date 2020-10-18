@@ -69,6 +69,9 @@
       &.large {
         width: 20%;
       }
+      &.small {
+        padding-left: 15px;
+      }
     }
   }
 </style>
