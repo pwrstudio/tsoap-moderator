@@ -5,7 +5,13 @@
   //
   // # # # # # # # # # # # # #
   //   *** IMPORT
-  import { Tabs, Tab, TabContent, DataTable } from "carbon-components-svelte"
+  import {
+    Tabs,
+    Tab,
+    TabContent,
+    Tile,
+    DataTable,
+  } from "carbon-components-svelte"
 
   import ChatMessage from "./ChatMessage.svelte"
 
@@ -21,6 +27,9 @@
   @import "./variables.scss";
 </style>
 
+<Tile>
+  <h1>Chatrooms (text)</h1>
+</Tile>
 <Tabs type="container">
   <Tab label="All" />
   <Tab label="1" />
@@ -29,29 +38,49 @@
   <Tab label="4" />
   <div slot="content">
     <TabContent>
-      {#each chatMessages as message}
-        <ChatMessage {message} />
-      {/each}
+      {#if chatMessages.length > 0}
+        {#each chatMessages as message}
+          <ChatMessage {message} />
+        {/each}
+      {:else}
+        <Tile>No messages</Tile>
+      {/if}
     </TabContent>
     <TabContent>
-      {#each chatMessages.filter(m => m.room === 1) as message}
-        <ChatMessage {message} />
-      {/each}
+      {#if chatMessages.filter(m => m.room === 1).length > 0}
+        {#each chatMessages.filter(m => m.room === 1) as message}
+          <ChatMessage {message} />
+        {/each}
+      {:else}
+        <Tile>No messages</Tile>
+      {/if}
     </TabContent>
     <TabContent>
-      {#each chatMessages.filter(m => m.room === 2) as message}
-        <ChatMessage {message} />
-      {/each}
+      {#if chatMessages.filter(m => m.room === 2).length > 0}
+        {#each chatMessages.filter(m => m.room === 2) as message}
+          <ChatMessage {message} />
+        {/each}
+      {:else}
+        <Tile>No messages in Room 2</Tile>
+      {/if}
     </TabContent>
     <TabContent>
-      {#each chatMessages.filter(m => m.room === 3) as message}
-        <ChatMessage {message} />
-      {/each}
+      {#if chatMessages.filter(m => m.room === 3).length > 0}
+        {#each chatMessages.filter(m => m.room === 3) as message}
+          <ChatMessage {message} />
+        {/each}
+      {:else}
+        <Tile>No messages in Room 3</Tile>
+      {/if}
     </TabContent>
     <TabContent>
-      {#each chatMessages.filter(m => m.room === 4) as message}
-        <ChatMessage {message} />
-      {/each}
+      {#if chatMessages.filter(m => m.room === 4).length > 0}
+        {#each chatMessages.filter(m => m.room === 4) as message}
+          <ChatMessage {message} />
+        {/each}
+      {:else}
+        <Tile>No messages in Room 4</Tile>
+      {/if}
     </TabContent>
   </div>
 </Tabs>

@@ -21,6 +21,7 @@
   "dependencies": {
     "@carbon/themes": "^10.21.0",
     "carbon-components-svelte": "^0.18.0",
+    "carbon-icons-svelte": "^10.17.0",
     "chance": "^1.1.7",
     "colyseus.js": "^0.13.2",
     "date-fns": "^2.16.1",

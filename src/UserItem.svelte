@@ -7,27 +7,31 @@
 
   // IMPORTS
   import { fade } from "svelte/transition"
+  import Bot20 from "carbon-icons-svelte/lib/Bot20"
+  import User20 from "carbon-icons-svelte/lib/User20"
+  import UserAdmin20 from "carbon-icons-svelte/lib/UserAdmin20"
+  import Checkmark20 from "carbon-icons-svelte/lib/Checkmark20"
+  import ShoppingBag20 from "carbon-icons-svelte/lib/ShoppingBag20"
+
+  import { Button, Tag } from "carbon-components-svelte"
 
   // PROPS
-  export let player = {}
+  export let user = {}
   export let header = false
 
   let banned = false
 
   // STORES
-  import { gameRoom, chatRoom } from "./stores.js"
+  import { gameRoom } from "./stores.js"
 
   const addToBlackList = () => {
-    // $chatRoom.send("blacklist", {
-    //   ip: player.ip
-    // });
     $gameRoom.send("blacklist", {
-      address: player.ip,
+      address: user.ip,
     })
     banned = true
   }
 
-  console.dir(player)
+  console.dir(user)
 </script>
 
 <style lang="scss">
@@ -37,11 +41,11 @@
     width: 100%;
     display: flex;
     margin-bottom: 5px;
-    border-bottom: 1px solid $lightgrey;
+    border-bottom: 1px solid grey;
     line-height: 1em;
-    font-size: $font_size_normal;
+    font-size: 0.75rem;
     text-align: left;
-    padding: 5px;
+    // padding: 5px;
 
     opacity: 1;
 
@@ -50,77 +54,56 @@
     }
 
     div {
-      width: 16%;
+      float: left;
+      width: 10%;
       white-space: nowrap;
       overflow: hidden;
-      padding: 5px;
       text-overflow: ellipsis;
-
-      &.small {
-        font-size: $font_size_small;
-      }
+      line-height: 3em;
+      padding-top: 6px;
 
       &.marked {
         font-weight: bold;
       }
 
-      &.color-code-outer {
-        display: flex;
-        // justify-content: center;
-        // align-items: center;
-        width: 40px;
-
-        .color-code {
-          padding: 0;
-          width: 20px;
-          height: 20px;
-          border-radius: 20px;
-          position: relative;
-          top: -4px;
-        }
+      &.large {
+        width: 20%;
       }
     }
-
-    &.header {
-      font-size: $font_size_small;
-      font-weight: bold;
-    }
-  }
-
-  .ban {
-    background: lightcoral;
-    cursor: pointer;
-  }
-
-  .banned {
-    background: lightgreen;
   }
 </style>
 
 <div class="user-item" class:header transition:fade|local>
-  {#if header}
-    <div class="color-code-outer" />
-    <div>Name</div>
-    <div>UUID</div>
-    <div>SessionId</div>
-    <div>IP</div>
-    <div>(x,y)</div>
-    <div>Ban IP</div>
-  {:else}
-    <div class="color-code-outer">
-      <div
-        class="color-code"
-        style={'background-color:' + player.tint.replace('0X', '#')} />
-    </div>
-    <div class="marked">{player.name}</div>
-    <div>{player.uuid}</div>
-    <div>{player.id}</div>
-    <div>{player.ip}</div>
-    <div>{player.x}, {player.y}</div>
-    <div>
-      <button class="ban" class:banned on:click={addToBlackList}>
-        {#if banned}Done{:else}Ban{/if}
-      </button>
-    </div>
-  {/if}
+  <div class="small">
+    {#if user.npc}
+      <Tag type="grey">
+        <Bot20 style="fill: grey" />
+      </Tag>
+    {:else if user.authenticated}
+      <Tag type="grey">
+        <UserAdmin20 style="fill: grey" />
+      </Tag>
+    {:else}
+      <Tag type="grey">
+        <User20 style="fill: grey" />
+      </Tag>
+    {/if}
+  </div>
+  <div class="marked large">{user.name}</div>
+  <div>{user.x}</div>
+  <div>{user.y}</div>
+  <div>{user.area}</div>
+  <div>
+    {#if user.npc}
+      <Tag type="grey">
+        <ShoppingBag20 style="fill: grey" />
+      </Tag>
+    {/if}
+  </div>
+  <div>{user.ip.replace('::ffff:', '')}</div>
+  <div class="large">
+    <Button size="small" kind="danger" on:click={addToBlackList}>
+      Ban IP address
+    </Button>
+  </div>
 </div>

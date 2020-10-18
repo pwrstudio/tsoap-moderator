@@ -1,12 +1,13 @@
 <script>
   // # # # # # # # # # # # # #
   //
-  //  USERLIST
+  //  BLACKLIST
   //
   // # # # # # # # # # # # # #
 
   // COMPONENTS
-  import { DataTable, Tile, Tag } from "carbon-components-svelte"
+  import { Tile, Tag } from "carbon-components-svelte"
+  import AddressItem from "./AddressItem.svelte"
 
   // *** PROPS
   export let blackList = []
@@ -19,12 +20,12 @@
 
 <div class="users">
   <Tile>
+    <h1>Banned IP addresses</h1>
+  </Tile>
+  <Tile>
     <Tag type="red">Banned IPs: {blackList.length}</Tag>
   </Tile>
-  <DataTable
-    sortable
-    headers={[{ key: 'ip', value: 'IP' }]}
-    rows={blackList.map(ip => {
-      return { ip: ip }
-    })} />
+  {#each blackList as address}
+    <AddressItem {address} />
+  {/each}
 </div>

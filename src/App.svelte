@@ -1,7 +1,7 @@
 <script>
   // # # # # # # # # # # # # #
   //
-  //  TSoaP Client
+  //  TSoaP Moderator
   //
   // # # # # # # # # # # # # #
 
@@ -15,12 +15,6 @@
     Header,
     HeaderNav,
     HeaderNavItem,
-    HeaderNavMenu,
-    SideNav,
-    SideNavItems,
-    SideNavMenu,
-    SideNavMenuItem,
-    SideNavLink,
     SkipToContent,
     Content,
   } from "carbon-components-svelte"
@@ -61,7 +55,7 @@
     avatar.ip = player.ip
     avatar.connected = player.connected
     avatar.authenticated = player.authenticated
-    avatar.npc = player.authenticated
+    avatar.npc = player.npc
     avatar.carrying = player.carrying
     avatar.id = sessionId
     return avatar
@@ -91,22 +85,14 @@
     // PLAYER: ADD
     $gameRoom.state.players.onAdd = function (player, sessionId) {
       users[sessionId] = createPlayer(player, sessionId)
-      console.dir(users)
     }
 
-    // PLAYER:  STATE CHANGE
+    // PLAYER: STATE CHANGE
     $gameRoom.state.players.onChange = function (player, sessionId) {
-      // if (player.path.waypoints.length > 0) {
-      console.log(player.area)
-      console.log(sessionId)
       users[sessionId].x = player.x
       users[sessionId].y = player.y
       users[sessionId].area = player.area
-      users[sessionId].npc = player.npc
       users[sessionId].carrying = player.carrying
-      users[sessionId].authenticated = player.authenticated
-
-      // }
     }
 
     // BLACKLIST: ADD
@@ -134,8 +120,8 @@
 
     // CHAT: ADD
     $gameRoom.state.messages.onAdd = message => {
-      chatMessages = [...chatMessages, message]
-      console.dir(chatMessages)
+      chatMessages = [message, ...chatMessages]
+      // console.dir(chatMessages)
     }
 
     // SUBMIT CHAT

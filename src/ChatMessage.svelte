@@ -1,7 +1,7 @@
 <script>
   // # # # # # # # # # # # # #
   //
-  //  Chat Message
+  //  CHAT MESSAGE
   //
   // # # # # # # # # # # # # #
 
@@ -40,7 +40,6 @@
   .chat-message {
     margin-bottom: 10px;
     padding-bottom: 10px;
-    border-bottom: 1px solid $lightgrey;
     font-size: $font_size_normal;
 
     .meta {
@@ -56,43 +55,39 @@
         float: right;
         color: black;
       }
-
-      .color-code {
-        height: 1em;
-        width: 1em;
-        border-radius: 1em;
-        margin-right: 0.35em;
-        float: left;
-      }
     }
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid grey;
+    padding-bottom: 2em;
 
     .body {
-      font-size: $font_size_normal;
+      margin-top: 1em;
+      // font-size: 1.2rem;
     }
   }
 
-  .remove {
-    font-size: $font_size_small;
-    margin-left: 10px;
-    background: lightcoral;
-    cursor: pointer;
-  }
-
-  .removed {
-    background: lightgreen;
+  code {
+    font-size: 0.65rem;
   }
 </style>
 
 <div transition:fade|local>
   <Tile>
-    <div class="meta">
-      <span
-        class="color-code"
-        style={'background-color:' + get(message, 'tint', '0XFF0000').replace('0X', '#')} />
-      <span class="name">{message.name}</span>
-      <span class="date">{formattedDate()}</span>
+    <div class="container">
+      <div class="meta">
+        <div class="date"><code>{formattedDate()}</code></div>
+        <div class="name"><strong>{message.name}</strong></div>
+        <div class="body">{message.text}</div>
+      </div>
+      <div>
+        <Button size="small" kind="danger" on:click={removeMessage}>
+          Remove
+        </Button>
+      </div>
     </div>
-    <div class="body">{message.text}</div>
-    <Button size="small" kind="danger" on:click={removeMessage}>Remove</Button>
   </Tile>
 </div>

@@ -1,12 +1,13 @@
 <script>
   // # # # # # # # # # # # # #
   //
-  //  User list item
+  //  IP ADDRESS
   //
   // # # # # # # # # # # # # #
 
   // IMPORTS
   import { fade } from "svelte/transition"
+  import { Button, Tag } from "carbon-components-svelte"
 
   // PROPS
   export let address = {}
@@ -19,9 +20,6 @@
   import { gameRoom, chatRoom } from "./stores.js"
 
   const removeFromBlackList = () => {
-    // $chatRoom.send("blacklist", {
-    //   ip: player.ip
-    // });
     $gameRoom.send("whitelist", {
       address: address.address,
     })
@@ -38,11 +36,12 @@
     width: 100%;
     display: flex;
     margin-bottom: 5px;
-    border-bottom: 1px solid $lightgrey;
+    border-bottom: 1px solid grey;
     line-height: 1em;
-    font-size: $font_size_normal;
+    font-size: 0.75rem;
     text-align: left;
-    padding: 5px;
+    display: flex;
+    justify-content: space-between;
 
     opacity: 1;
 
@@ -51,35 +50,15 @@
     }
 
     div {
-      width: 50%;
       white-space: nowrap;
       overflow: hidden;
-      padding: 5px;
       text-overflow: ellipsis;
+      line-height: 3em;
+      padding-top: 6px;
 
-      //   &.small {
-      //     font-size: $font_size_small;
-      //   }
-
-      //   &.marked {
-      //     font-weight: bold;
-      //   }
-
-      //   &.color-code-outer {
-      //     display: flex;
-      //     // justify-content: center;
-      //     // align-items: center;
-      //     width: 40px;
-
-      //     .color-code {
-      //       padding: 0;
-      //       width: 20px;
-      //       height: 20px;
-      //       border-radius: 20px;
-      //       position: relative;
-      //       top: -4px;
-      //     }
-      //   }
+      &.marked {
+        font-weight: bold;
+      }
     }
 
     &.header {
@@ -87,33 +66,13 @@
       font-weight: bold;
     }
   }
-
-  .unban {
-    background: lightcoral;
-    cursor: pointer;
-  }
-
-  .unbanned {
-    background: lightgreen;
-  }
 </style>
 
 <div class="address-item" transition:fade|fade>
-  <!-- 
-  {#if header}
-    <div class="color-code-outer" />
-    <div>Name</div>
-    <div>UUID</div>
-    <div>SessionId</div>
-    <div>IP</div>
-    <div>(x,y)</div>
-    <div>Ban IP</div>
-  {:else} -->
   <div class="marked">{address.address}</div>
   <div>
-    <button class="unban" class:unbanned on:click={removeFromBlackList}>
-      {#if unbanned}Done{:else}Unban{/if}
-    </button>
+    <Button size="small" kind="primary" on:click={removeFromBlackList}>
+      Unban IP address
+    </Button>
   </div>
-  <!-- {/if} -->
 </div>

@@ -1,16 +1,20 @@
 <script>
   // # # # # # # # # # # # # #
   //
-  //  TSoaP Moderator
+  //  AUDIOCHAT
   //
   // # # # # # # # # # # # # #
-  //   *** IMPORT
-  import { Tabs, Tab, TabContent } from "carbon-components-svelte"
+  // *** IMPORT
+  import { Tabs, Tab, TabContent, Tile } from "carbon-components-svelte"
 </script>
 
 <style lang="scss">
   @import "./variables.scss";
 </style>
+
+<Tile>
+  <h1>Chatrooms (audio)</h1>
+</Tile>
 
 <Tabs type="container">
   <Tab label="1" />
@@ -21,12 +25,26 @@
   <Tab label="6" />
   <Tab label="7" />
   <div slot="content">
-    <TabContent>Content 1</TabContent>
-    <TabContent>Content 2</TabContent>
-    <TabContent>Content 3</TabContent>
-    <TabContent>Content 4</TabContent>
-    <TabContent>Content 5</TabContent>
-    <TabContent>Content 6</TabContent>
-    <TabContent>Content 7</TabContent>
+    <TabContent>
+      <Tile>Audioroom 1</Tile>
+    </TabContent>
+    <TabContent>
+      <Tile>Audioroom 2</Tile>
+    </TabContent>
+    <TabContent>
+      <Tile>Audioroom 3</Tile>
+    </TabContent>
+    <TabContent>
+      <Tile>Audioroom 4</Tile>
+    </TabContent>
+    <TabContent>
+      <Tile>Audioroom 5</Tile>
+    </TabContent>
+    <TabContent>
+      <Tile>Audioroom 6</Tile>
+    </TabContent>
+    <TabContent>
+      <Tile>Audioroom 7</Tile>
+    </TabContent>
   </div>
 </Tabs>
