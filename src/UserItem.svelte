@@ -6,28 +6,28 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
-  import { fade } from "svelte/transition";
+  import { fade } from "svelte/transition"
 
   // PROPS
-  export let player = {};
-  export let header = false;
+  export let player = {}
+  export let header = false
 
-  let banned = false;
+  let banned = false
 
   // STORES
-  import { gameRoom, chatRoom } from "./stores.js";
+  import { gameRoom, chatRoom } from "./stores.js"
 
   const addToBlackList = () => {
     // $chatRoom.send("blacklist", {
     //   ip: player.ip
     // });
     $gameRoom.send("blacklist", {
-      address: player.ip
-    });
-    banned = true;
-  };
+      address: player.ip,
+    })
+    banned = true
+  }
 
-  console.dir(player);
+  console.dir(player)
 </script>
 
 <style lang="scss">
@@ -97,8 +97,7 @@
   }
 </style>
 
-<div class="user-item" class:header transition:fade>
-
+<div class="user-item" class:header transition:fade|local>
   {#if header}
     <div class="color-code-outer" />
     <div>Name</div>

@@ -6,17 +6,19 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
-  import { fade } from 'svelte/transition'
-  import get from 'lodash/get'
+  import { fade } from "svelte/transition"
+  import get from "lodash/get"
+
+  import { Button, Tile } from "carbon-components-svelte"
 
   // GLOBALS
-  import { formattedDate } from './global.js'
+  import { formattedDate } from "./global.js"
 
   // PROPS
   export let message = {}
 
   // STORES
-  import { gameRoom } from './stores.js'
+  import { gameRoom } from "./stores.js"
 
   console.dir(message)
 
@@ -25,7 +27,7 @@
 
   const removeMessage = () => {
     console.dir(message.msgId)
-    $gameRoom.send('removeChatMessage', {
+    $gameRoom.send("removeChatMessage", {
       msgId: message.msgId,
     })
     removed = true
@@ -33,7 +35,7 @@
 </script>
 
 <style lang="scss">
-  @import './variables.scss';
+  @import "./variables.scss";
 
   .chat-message {
     margin-bottom: 10px;
@@ -81,17 +83,16 @@
   }
 </style>
 
-<div class="chat-message" transition:fade>
-  <div class="meta">
-    <span
-      class="color-code"
-      style={'background-color:' + get(message, 'tint', '0XFF0000').replace('0X', '#')} />
-    <span class="name">{message.name}</span>
-    <span class="date">{formattedDate()}</span>
-    <button class="remove" class:removed on:click={removeMessage}>
-      {#if removed}Done{:else}Remove{/if}
-    </button>
-
-  </div>
-  <div class="body">{message.text}</div>
+<div transition:fade|local>
+  <Tile>
+    <div class="meta">
+      <span
+        class="color-code"
+        style={'background-color:' + get(message, 'tint', '0XFF0000').replace('0X', '#')} />
+      <span class="name">{message.name}</span>
+      <span class="date">{formattedDate()}</span>
+    </div>
+    <div class="body">{message.text}</div>
+    <Button size="small" kind="danger" on:click={removeMessage}>Remove</Button>
+  </Tile>
 </div>

@@ -6,27 +6,27 @@
   // # # # # # # # # # # # # #
 
   // IMPORTS
-  import { fade } from "svelte/transition";
+  import { fade } from "svelte/transition"
 
   // PROPS
-  export let address = {};
+  export let address = {}
 
-  console.dir(address);
+  console.dir(address)
 
-  let unbanned = false;
+  let unbanned = false
 
   // STORES
-  import { gameRoom, chatRoom } from "./stores.js";
+  import { gameRoom, chatRoom } from "./stores.js"
 
   const removeFromBlackList = () => {
     // $chatRoom.send("blacklist", {
     //   ip: player.ip
     // });
     $gameRoom.send("whitelist", {
-      address: address.address
-    });
-    unbanned = true;
-  };
+      address: address.address,
+    })
+    unbanned = true
+  }
 
   //   console.dir(player);
 </script>
@@ -98,7 +98,7 @@
   }
 </style>
 
-<div class="address-item" transition:fade>
+<div class="address-item" transition:fade|fade>
   <!-- 
   {#if header}
     <div class="color-code-outer" />
