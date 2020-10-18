@@ -111,18 +111,20 @@
       console.error(message)
     })
 
-    // CHAT: REMOVE
-    $gameRoom.state.messages.onRemove = message => {
-      const itemIndex = chatMessages.findIndex(m => m === message)
-      chatMessages.splice(itemIndex, 1)
-      chatMessages = chatMessages
-    }
-
     // CHAT: ADD
     $gameRoom.state.messages.onAdd = message => {
       chatMessages = [message, ...chatMessages]
-      // console.dir(chatMessages)
     }
+
+    $gameRoom.onMessage("nukeMessage", msgIdToRemove => {
+      console.log("!!!! MESGS")
+      console.dir(msgIdToRemove)
+      const itemIndex = chatMessages.findIndex(m => m.msgId === msgIdToRemove)
+      console.log(itemIndex)
+      console.dir(chatMessages[itemIndex])
+      chatMessages.splice(itemIndex, 1)
+      chatMessages = chatMessages
+    })
 
     // SUBMIT CHAT
     // submitChat = event => {
