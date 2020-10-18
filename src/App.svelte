@@ -56,10 +56,10 @@
 
   let currentStream = false
 
-  audioRoomNames.then(audioRoomNames => {
-    console.dir(audioRoomNames)
-    return audioRoomNames
-  })
+  // audioRoomNames.then(audioRoomNames => {
+  //   console.dir(audioRoomNames)
+  //   return audioRoomNames
+  // })
 
   let activeStreams = loadData(QUERY.ACTIVE_STREAMS)
     .catch(err => {
@@ -124,8 +124,8 @@
 
     // PLAYER: REMOVE
     $gameRoom.state.players.onRemove = function (player, sessionId) {
-      console.log("REMOVE")
-      console.dir(users[sessionId])
+      // console.log("REMOVE")
+      // console.dir(users[sessionId])
       delete users[sessionId]
       // FORCE RENDER
       users = users
@@ -138,7 +138,6 @@
 
     // PLAYER: STATE CHANGE
     $gameRoom.state.players.onChange = function (player, sessionId) {
-      console.log("player.carrying", player.carrying)
       users[sessionId].x = player.x
       users[sessionId].y = player.y
       users[sessionId].area = player.area
@@ -167,11 +166,11 @@
     }
 
     $gameRoom.onMessage("nukeMessage", msgIdToRemove => {
-      console.log("!!!! MESGS")
-      console.dir(msgIdToRemove)
+      // console.log("!!!! MESGS")
+      // console.dir(msgIdToRemove)
       const itemIndex = chatMessages.findIndex(m => m.msgId === msgIdToRemove)
-      console.log(itemIndex)
-      console.dir(chatMessages[itemIndex])
+      // console.log(itemIndex)
+      // console.dir(chatMessages[itemIndex])
       chatMessages.splice(itemIndex, 1)
       chatMessages = chatMessages
     })

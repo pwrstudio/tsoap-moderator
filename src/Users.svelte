@@ -13,7 +13,7 @@
   export let users = []
   export let areas = []
 
-  console.dir(users)
+  // console.dir(users)
 </script>
 
 <style lang="scss">
@@ -61,7 +61,7 @@
       {Object.values(users).filter(u => u.npc).length}
     </Tag>
   </Tile>
-  {#each Object.values(users) as user (user.uuid)}
+  {#each Object.values(users) as user}
     <UserItem {user} {areas} />
   {/each}
 </div>

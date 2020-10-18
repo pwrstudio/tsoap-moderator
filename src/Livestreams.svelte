@@ -11,7 +11,7 @@
   import VideoPlayer from "./VideoPlayer.svelte"
 
   export let currentStream = false
-  console.dir(currentStream)
+  // console.dir(currentStream)
 </script>
 
 <style lang="scss">

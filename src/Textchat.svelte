@@ -18,9 +18,9 @@
   // *** PROPS
   export let chatMessages = []
 
-  $: {
-    console.log("chatm", chatMessages)
-  }
+  // $: {
+  //   console.log("chatm", chatMessages)
+  // }
 </script>
 
 <style lang="scss">

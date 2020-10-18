@@ -11,7 +11,7 @@
 
   // *** PROPS
   export let blackList = []
-  console.dir(blackList)
+  // console.dir(blackList)
 </script>
 
 <style lang="scss">

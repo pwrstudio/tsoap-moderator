@@ -28,8 +28,16 @@
     })
   }
 
-  console.dir(user)
-  console.dir(areas)
+  // console.dir(user)
+  // console.dir(areas)
+
+  let userArea = ""
+
+  $: {
+    let tempArea = areas.find(a => a.areaIndex === user.area)
+    // console.log(tempArea)
+    userArea = tempArea && tempArea.title ? tempArea.title : ""
+  }
 </script>
 
 <style lang="scss">
@@ -53,7 +61,7 @@
 
     div {
       float: left;
-      width: 12%;
+      width: 15%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -91,9 +99,8 @@
     {/if}
   </div>
   <div class="marked large">{user.name}</div>
-  <div>{user.x}</div>
-  <div>{user.y}</div>
-  <div>{areas.find(a => a.areaIndex === user.area).title}</div>
+  <div>{user.x}, {user.y}</div>
+  <div>{userArea}</div>
   <!-- <div>
     {#if user.npc}
       <Tag type="grey">

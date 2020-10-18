@@ -20,13 +20,13 @@
   // STORES
   import { gameRoom } from "./stores.js"
 
-  console.dir(message.msgId)
+  // console.dir(message)
 
   // VARIABLES
   let removed = false
 
   const removeMessage = () => {
-    console.log("__ CLICKED TO REMOVE REMOVE =>", message.msgId, message)
+    // console.log("__ CLICKED TO REMOVE REMOVE =>", message.msgId, message)
     $gameRoom.send("removeChatMessage", {
       msgId: message.msgId,
     })
@@ -80,7 +80,7 @@
     <div class="container">
       <div class="meta">
         <div class="date">
-          <code>{formattedDate()} => Room {message.room}</code>
+          <code>{formattedDate(message.timestamp)} => Room {message.room}</code>
         </div>
         <div class="name"><strong>{message.name}</strong></div>
         <div class="body">{message.text}</div>

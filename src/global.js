@@ -49,38 +49,38 @@ export const QUERY = {
 
 // const mainFormat = "MMM dd yyyy – HH:mm"
 // const mainFormat = "MMM dd – HH:mm"
-// const mainFormat = "HH:mm 'CET,' EEE MMM dd"
+const mainFormat = "HH:mm 'CET,' EEE MMM dd"
 
-// export const formattedDate = (start, end) => {
-//   try {
-//     if (!start) {
-//       return false
-//     }
-//     const startDate = Date.parse(start)
+export const formattedDate = (start, end) => {
+  try {
+    if (!start) {
+      return false
+    }
+    const startDate = start
 
-//     if (!startDate) {
-//       return false
-//     }
+    if (!startDate) {
+      return false
+    }
 
-//     if (!end) {
-//       return format(startDate, mainFormat)
-//     }
+    if (!end) {
+      return format(startDate, mainFormat)
+    }
 
-//     const endDate = Date.parse(end)
+    const endDate = Date.parse(end)
 
-//     if (format(startDate, "dd.MM.yyyy") == format(endDate, "dd.MM.yyyy")) {
-//       return format(startDate, "dd.MM.yyyy")
-//     }
+    if (format(startDate, "dd.MM.yyyy") == format(endDate, "dd.MM.yyyy")) {
+      return format(startDate, "dd.MM.yyyy")
+    }
 
-//     const startFormat =
-//       getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy"
-//     const endFormat = "dd.MM.yyyy"
+    const startFormat =
+      getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy"
+    const endFormat = "dd.MM.yyyy"
 
-//     return format(startDate, startFormat) + " – " + format(endDate, endFormat)
-//   } catch (err) {
-//     console.dir(err)
-//   }
-// }
+    return format(startDate, startFormat) + " – " + format(endDate, endFormat)
+  } catch (err) {
+    console.dir(err)
+  }
+}
 
 export const formattedChatDate = start => {
   try {
@@ -120,23 +120,23 @@ export function debounce(fn, wait = 1) {
   }
 }
 
-export const formattedDate = (start, end) => {
+// export const formattedDate = (start, end) => {
 
-    const startDate = start ? start : Date.now();
+//     const startDate = start ? start : Date.now();
 
-    if (!end) {
-        return format(startDate, "HH:mm:ss / dd.MM.yyy");
-    }
+//     if (!end) {
+//         return format(startDate, "HH:mm:ss / dd.MM.yyy");
+//     }
 
-    const endDate = Date.parse(end);
+//     const endDate = Date.parse(end);
 
-    if (format(startDate, "dd.MM.yyyy") == format(endDate, "dd.MM.yyyy")) {
-        return format(startDate, "dd.MM.yyyy");
-    }
+//     if (format(startDate, "dd.MM.yyyy") == format(endDate, "dd.MM.yyyy")) {
+//         return format(startDate, "dd.MM.yyyy");
+//     }
 
-    const startFormat =
-        getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
-    const endFormat = "dd.MM.yyyy";
+//     const startFormat =
+//         getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
+//     const endFormat = "dd.MM.yyyy";
 
-    return format(startDate, startFormat) + " – " + format(endDate, endFormat);
-};
+//     return format(startDate, startFormat) + " – " + format(endDate, endFormat);
+// };
