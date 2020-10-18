@@ -103,8 +103,10 @@
   </div> -->
   <div>{user.ip.replace('::ffff:', '')}</div>
   <div class="large">
-    <Button size="small" kind="danger" on:click={addToBlackList}>
-      Ban IP address
-    </Button>
+    {#if !user.npc}
+      <Button size="small" kind="danger" on:click={addToBlackList}>
+        Ban IP address
+      </Button>
+    {/if}
   </div>
 </div>

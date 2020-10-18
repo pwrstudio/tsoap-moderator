@@ -52,7 +52,7 @@
           <ChatMessage {message} />
         {/each}
       {:else}
-        <Tile>No messages</Tile>
+        <Tile>No messages in <strong>Room 1</strong></Tile>
       {/if}
     </TabContent>
     <TabContent>
@@ -61,7 +61,7 @@
           <ChatMessage {message} />
         {/each}
       {:else}
-        <Tile>No messages in Room 2</Tile>
+        <Tile>No messages in <strong>Room 2</strong></Tile>
       {/if}
     </TabContent>
     <TabContent>
@@ -70,7 +70,7 @@
           <ChatMessage {message} />
         {/each}
       {:else}
-        <Tile>No messages in Room 3</Tile>
+        <Tile>No messages in <strong>Room 3</strong></Tile>
       {/if}
     </TabContent>
     <TabContent>
@@ -79,7 +79,7 @@
           <ChatMessage {message} />
         {/each}
       {:else}
-        <Tile>No messages in Room 4</Tile>
+        <Tile>No messages in <strong>Room 4</strong></Tile>
       {/if}
     </TabContent>
   </div>
