@@ -47,29 +47,19 @@
   </Tile>
   <Tile>
     <Tag type="green">Users: {Object.values(users).length}</Tag>
-    <Tag type="magenta">
+    <Tag type="gray">
       Accredited:
       {Object.values(users).filter(u => u.authenticated).length}
     </Tag>
-    <Tag type="cyan">
+    <Tag type="gray">
       Guests:
       {Object.values(users).filter(u => !u.npc && !u.authenticated).length}
     </Tag>
-    <Tag type="teal">
+    <Tag type="gray">
       NPCs:
       {Object.values(users).filter(u => u.npc).length}
     </Tag>
   </Tile>
-  <!-- <div class="header">
-    <div class="header-item small">&nbsp;</div>
-    <div class="header-item">Name</div>
-    <div class="header-item">Area</div>
-    <div class="header-item">X</div>
-    <div class="header-item">Y</div>
-    <div class="header-item">Carrying</div>
-    <div class="header-item">IP</div>
-    <div class="header-item" />
-  </div> -->
   {#each Object.values(users) as user (user.uuid)}
     <UserItem {user} />
   {/each}

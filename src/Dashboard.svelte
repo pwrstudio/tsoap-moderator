@@ -50,20 +50,25 @@
 <!-- USERS -->
 <ClickableTile href="/users">
   <Tag type="green">Users: {Object.values(users).length}</Tag>
-  <Tag type="magenta">
+  <Tag type="grey">
     Accredited:
     {Object.values(users).filter(u => u.authenticated).length}
   </Tag>
-  <Tag type="cyan">
+  <Tag type="grey">
     Guests:
     {Object.values(users).filter(u => !u.npc && !u.authenticated).length}
   </Tag>
-  <Tag type="teal">NPCs: {Object.values(users).filter(u => u.npc).length}</Tag>
+  <Tag type="grey">NPCs: {Object.values(users).filter(u => u.npc).length}</Tag>
 </ClickableTile>
 
 <!-- BLACKLIST -->
 <ClickableTile href="/banned">
   <Tag type="red">Banned IPs: {blackList.length}</Tag>
+</ClickableTile>
+
+<!-- LIVESTREAM -->
+<ClickableTile href="/livestreams">
+  <Tag type="magenta">Livestream: No</Tag>
 </ClickableTile>
 
 <!-- TEXTCHAT -->
@@ -75,39 +80,14 @@
   <Tag type="gray">Room 4: {chatMessages.filter(m => m.room === 4).length}</Tag>
 </ClickableTile>
 
-<!-- <Grid>
-  <Row>
-    <Tabs>
-      <Tab label="Userlist" />
-      <Tab label="Blacklist" />
-      <div slot="content">
-        <TabContent>
-          <UserList playerList={localPlayers} />
-        </TabContent>
-        <TabContent>
-          <BlackList {blackList} />
-        </TabContent>
-      </div>
-    </Tabs>
-  </Row>
-  <Row>
-    <Chat {chatMessages} />
-  </Row>
-  <Row>
-    <Tabs>
-      <Tab label="Userlist" />
-      <Tab label="Blacklist" />
-      <div slot="content">
-        <TabContent>
-          <UserList playerList={localPlayers} />
-        </TabContent>
-        <TabContent>
-          <BlackList {blackList} />
-        </TabContent>
-      </div>
-    </Tabs>
-  </Row>
-  <Row>
-    <Chat {chatMessages} />
-  </Row>
-</Grid> -->
+<!-- AUDIOCHAT -->
+<ClickableTile href="/audiochat">
+  <Tag type="purple">Audiochat</Tag>
+  <Tag type="gray">Room 1: {chatMessages.filter(m => m.room === 1).length}</Tag>
+  <Tag type="gray">Room 2: {chatMessages.filter(m => m.room === 2).length}</Tag>
+  <Tag type="gray">Room 3: {chatMessages.filter(m => m.room === 3).length}</Tag>
+  <Tag type="gray">Room 4: {chatMessages.filter(m => m.room === 4).length}</Tag>
+  <Tag type="gray">Room 5: {chatMessages.filter(m => m.room === 4).length}</Tag>
+  <Tag type="gray">Room 6: {chatMessages.filter(m => m.room === 4).length}</Tag>
+  <Tag type="gray">Room 7: {chatMessages.filter(m => m.room === 4).length}</Tag>
+</ClickableTile>
