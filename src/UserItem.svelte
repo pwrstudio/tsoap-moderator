@@ -17,9 +17,7 @@
 
   // PROPS
   export let user = {}
-  export let header = false
-
-  let banned = false
+  export let areas = []
 
   // STORES
   import { gameRoom } from "./stores.js"
@@ -28,10 +26,10 @@
     $gameRoom.send("blacklist", {
       address: user.ip,
     })
-    banned = true
   }
 
   console.dir(user)
+  console.dir(areas)
 </script>
 
 <style lang="scss">
@@ -55,7 +53,7 @@
 
     div {
       float: left;
-      width: 10%;
+      width: 12%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -76,7 +74,7 @@
   }
 </style>
 
-<div class="user-item" class:header transition:fade|local>
+<div class="user-item" transition:fade|local>
   <div class="small">
     {#if user.npc}
       <Tag type="grey">
@@ -95,14 +93,14 @@
   <div class="marked large">{user.name}</div>
   <div>{user.x}</div>
   <div>{user.y}</div>
-  <div>{user.area}</div>
-  <div>
+  <div>{areas.find(a => a.areaIndex === user.area).title}</div>
+  <!-- <div>
     {#if user.npc}
       <Tag type="grey">
         <ShoppingBag20 style="fill: grey" />
       </Tag>
     {/if}
-  </div>
+  </div> -->
   <div>{user.ip.replace('::ffff:', '')}</div>
   <div class="large">
     <Button size="small" kind="danger" on:click={addToBlackList}>

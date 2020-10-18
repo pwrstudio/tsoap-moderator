@@ -10,6 +10,7 @@
   import * as Colyseus from "colyseus.js"
   import get from "lodash/get"
   import { fade, fly } from "svelte/transition"
+  import { loadData, client } from "./sanity.js"
   import { Router, Route, links } from "svelte-routing"
   import {
     Header,
@@ -33,11 +34,59 @@
   let blackList = []
   let chatMessages = []
 
-  // STORES
+  // *** STORES
   import { gameRoom } from "./stores.js"
 
-  // COLYSEUS
-  const client = new Colyseus.Client("wss://gameserver.tsoap.dev")
+  // *** GLOBALS
+  import { QUERY } from "./global.js"
+
+  // *** COLYSEUS
+  const gameClient = new Colyseus.Client("wss://gameserver.tsoap.dev")
+
+  // *** SANITY
+  const areas = loadData(QUERY.AREAS).catch(err => {
+    console.log(err)
+  })
+  const audioRoomNames = loadData(QUERY.AUDIOROOM_NAMES).catch(err => {
+    console.log(err)
+  })
+  const userList = loadData(QUERY.USERS).catch(err => {
+    console.log(err)
+  })
+
+  let currentStream = false
+
+  audioRoomNames.then(audioRoomNames => {
+    console.dir(audioRoomNames)
+    return audioRoomNames
+  })
+
+  let activeStreams = loadData(QUERY.ACTIVE_STREAMS)
+    .catch(err => {
+      console.log(err)
+    })
+    .then(activeStreams => {
+      currentStream = activeStreams.mainStream
+    })
+
+  // __ Listen for changes to the active streams post
+  client.listen(QUERY.ACTIVE_STREAMS).subscribe(update => {
+    currentStream = false
+    setTimeout(() => {
+      activeStreams = loadData(QUERY.ACTIVE_STREAMS)
+        .then(aS => {
+          if (aS.mainStream) {
+            currentStream = aS.mainStream
+            activeContentClosed = false
+          } else {
+            currentStream = false
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }, 1000)
+  })
 
   // FUNCTIONS
   let submitChat = () => {}
@@ -64,7 +113,7 @@
   onMount(async () => {
     // => GAME ROOM
     gameRoom.set(
-      await client.joinOrCreate("game", {
+      await gameClient.joinOrCreate("game", {
         moderator: true,
         uuid: chance.guid(),
         name: "Moderator",
@@ -89,6 +138,7 @@
 
     // PLAYER: STATE CHANGE
     $gameRoom.state.players.onChange = function (player, sessionId) {
+      console.log("player.carrying", player.carrying)
       users[sessionId].x = player.x
       users[sessionId].y = player.y
       users[sessionId].area = player.area
@@ -167,11 +217,13 @@
   <Content>
     <Router>
       <Route path="/">
-        <Dashboard {users} {blackList} {chatMessages} />
+        <Dashboard {users} {blackList} {chatMessages} {currentStream} />
       </Route>
-      <Route path="/users">
-        <Users {users} />
-      </Route>
+      {#await areas then areas}
+        <Route path="/users">
+          <Users {users} {areas} />
+        </Route>
+      {/await}
       <Route path="/banned">
         <Banned {blackList} />
       </Route>
@@ -182,7 +234,7 @@
         <Audiochat />
       </Route>
       <Route path="/livestreams">
-        <Livestreams />
+        <Livestreams {currentStream} />
       </Route>
     </Router>
   </Content>

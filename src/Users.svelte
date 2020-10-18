@@ -11,6 +11,7 @@
 
   // *** PROPS
   export let users = []
+  export let areas = []
 
   console.dir(users)
 </script>
@@ -61,6 +62,6 @@
     </Tag>
   </Tile>
   {#each Object.values(users) as user (user.uuid)}
-    <UserItem {user} />
+    <UserItem {user} {areas} />
   {/each}
 </div>

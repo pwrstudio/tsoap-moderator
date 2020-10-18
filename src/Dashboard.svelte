@@ -10,33 +10,14 @@
   import * as Colyseus from "colyseus.js"
   import get from "lodash/get"
   import { fade, fly } from "svelte/transition"
-  import {
-    Header,
-    HeaderNav,
-    HeaderNavItem,
-    HeaderNavMenu,
-    SideNav,
-    SideNavItems,
-    SideNavMenu,
-    SideNavMenuItem,
-    SideNavLink,
-    SkipToContent,
-    Content,
-    Grid,
-    Row,
-    Column,
-    Tabs,
-    Tab,
-    TabContent,
-    Tile,
-    Tag,
-    ClickableTile,
-  } from "carbon-components-svelte"
+  import { Tile, Tag, ClickableTile } from "carbon-components-svelte"
 
   // *** PROPS
   export let users = {}
   export let blackList = []
   export let chatMessages = []
+  export let currentStream = false
+  console.dir(currentStream)
 </script>
 
 <style lang="scss">
@@ -68,7 +49,10 @@
 
 <!-- LIVESTREAM -->
 <ClickableTile href="/livestreams">
-  <Tag type="magenta">Livestream: No</Tag>
+  <Tag type="magenta">Livestream: {currentStream ? 'Yes' : 'No'}</Tag>
+  {#if currentStream}
+    <Tag type="gray">Active event: {currentStream.title}</Tag>
+  {/if}
 </ClickableTile>
 
 <!-- TEXTCHAT -->
@@ -83,11 +67,11 @@
 <!-- AUDIOCHAT -->
 <ClickableTile href="/audiochat">
   <Tag type="purple">Audiochat</Tag>
-  <Tag type="gray">Room 1: {chatMessages.filter(m => m.room === 1).length}</Tag>
+  <!-- <Tag type="gray">Room 1: {chatMessages.filter(m => m.room === 1).length}</Tag>
   <Tag type="gray">Room 2: {chatMessages.filter(m => m.room === 2).length}</Tag>
   <Tag type="gray">Room 3: {chatMessages.filter(m => m.room === 3).length}</Tag>
   <Tag type="gray">Room 4: {chatMessages.filter(m => m.room === 4).length}</Tag>
   <Tag type="gray">Room 5: {chatMessages.filter(m => m.room === 4).length}</Tag>
   <Tag type="gray">Room 6: {chatMessages.filter(m => m.room === 4).length}</Tag>
-  <Tag type="gray">Room 7: {chatMessages.filter(m => m.room === 4).length}</Tag>
+  <Tag type="gray">Room 7: {chatMessages.filter(m => m.room === 4).length}</Tag> -->
 </ClickableTile>
