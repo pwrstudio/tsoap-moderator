@@ -65,13 +65,13 @@
 </ClickableTile>
 
 <!-- AUDIOCHAT -->
-<ClickableTile href="/audiochat">
-  <Tag type="purple">Audiochat</Tag>
-  <!-- <Tag type="gray">Room 1: {chatMessages.filter(m => m.room === 1).length}</Tag>
+<!-- <ClickableTile href="/audiochat"> -->
+<!-- <Tag type="purple">Audiochat</Tag> -->
+<!-- <Tag type="gray">Room 1: {chatMessages.filter(m => m.room === 1).length}</Tag>
   <Tag type="gray">Room 2: {chatMessages.filter(m => m.room === 2).length}</Tag>
   <Tag type="gray">Room 3: {chatMessages.filter(m => m.room === 3).length}</Tag>
   <Tag type="gray">Room 4: {chatMessages.filter(m => m.room === 4).length}</Tag>
   <Tag type="gray">Room 5: {chatMessages.filter(m => m.room === 4).length}</Tag>
   <Tag type="gray">Room 6: {chatMessages.filter(m => m.room === 4).length}</Tag>
   <Tag type="gray">Room 7: {chatMessages.filter(m => m.room === 4).length}</Tag> -->
-</ClickableTile>
+<!-- </ClickableTile> -->
