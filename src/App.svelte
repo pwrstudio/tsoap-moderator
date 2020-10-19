@@ -209,7 +209,7 @@
       <HeaderNavItem href="/banned" text="Banned" />
       <HeaderNavItem href="/livestreams" text="Livestreams" />
       <HeaderNavItem href="/textchat" text="Textchat" />
-      <HeaderNavItem href="/audiochat" text="Audiochat" />
+      <!-- <HeaderNavItem href="/audiochat" text="Audiochat" /> -->
     </HeaderNav>
   </Header>
 

@@ -61,7 +61,7 @@
       {Object.values(users).filter(u => u.npc).length}
     </Tag>
   </Tile>
-  {#each Object.values(users) as user}
+  {#each Object.values(users).reverse() as user}
     <UserItem {user} {areas} />
   {/each}
 </div>
