@@ -56,11 +56,6 @@
 
   let currentStream = false
 
-  // audioRoomNames.then(audioRoomNames => {
-  //   console.dir(audioRoomNames)
-  //   return audioRoomNames
-  // })
-
   let activeStreams = loadData(QUERY.ACTIVE_STREAMS)
     .catch(err => {
       console.log(err)
@@ -134,14 +129,14 @@
     // PLAYER: ADD
     $gameRoom.state.players.onAdd = function (player, sessionId) {
       users[sessionId] = createPlayer(player, sessionId)
-    }
 
-    // PLAYER: STATE CHANGE
-    $gameRoom.state.players.onChange = function (player, sessionId) {
-      users[sessionId].x = player.x
-      users[sessionId].y = player.y
-      users[sessionId].area = player.area
-      users[sessionId].carrying = player.carrying
+      // PLAYER: STATE CHANGE
+      player.onChange = changes => {
+        users[sessionId].x = player.x
+        users[sessionId].y = player.y
+        users[sessionId].area = player.area
+        users[sessionId].carrying = player.carrying
+      }
     }
 
     // BLACKLIST: ADD
