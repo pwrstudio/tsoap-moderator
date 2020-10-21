@@ -23,7 +23,7 @@ export const QUERY = {
     "*[_id == 'graphics-settings']{..., mapLink->{'mainImage': mainImage,'miniImage': miniImage,'pathfindingGridUrl': pathfindingGrid.asset->url}, activeAvatars[]->{title, _id, 'spriteJsonURL': spriteJson.asset->url}}[0]",
   EVENTS:
     "*[_type == 'event']{..., participants[]->{slug,name,username}, connectedCaseStudies[]->{...,participants[]->{slug,name,username}},}",
-  USERS: "*[_type == 'participant']{...,avatarLink->{'iconUrl': rest[0].asset->url}}",
+  USERS: "*[_type == 'participant']{...,avatarLink->{'iconUrl': rest[0].asset->url}} | order(name asc) ",
   PAGES: "*[_type == 'page']",
   SEMINAR: "*[_type == 'seminar' && slug.current == $slug][0]",
   SEMINAR_PARTICIPANTS: "*[_type == 'participant' && seminarLink._ref == $id]",

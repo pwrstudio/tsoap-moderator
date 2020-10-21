@@ -4,29 +4,66 @@
   //  TSoaP Moderator
   //
   // # # # # # # # # # # # # #
-  //   *** IMPORT
+  // *** IMPORT
   import {
     Tabs,
     Tab,
     TabContent,
     Tile,
-    DataTable,
+    Form,
+    FormGroup,
+    Select,
+    SelectItem,
+    Button,
+    TextArea
   } from "carbon-components-svelte"
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   import ChatMessage from "./ChatMessage.svelte"
 
   // *** PROPS
   export let chatMessages = []
+  export let users = []
 
-  // $: {
-  //   console.log("chatm", chatMessages)
-  // }
+  // *** VARIBALES
+  let message = ''
+  let recipient = "all"
+
+  console.dir(users)
+
+  const sendMessage = () => {
+    console.log(recipient +  ': ' + message)
+    dispatch('message', {
+      message: message,
+      recipient: recipient
+    });
+  }
 </script>
 
 <style lang="scss">
   @import "./variables.scss";
 </style>
 
+
+<Tile>
+  <h1>Send message</h1>  
+  <Form on:submit={sendMessage}>
+    <FormGroup>
+      <Select id="select-1" labelText="Recipient" bind:selected={recipient}>
+        <SelectItem value="all" text="All accredited users" />
+        {#each users as user (user._id)}
+          <SelectItem value={user.username} text={user.name} />
+        {/each}
+      </Select>
+    </FormGroup>
+    <FormGroup>
+      <TextArea bind:value={message} labelText="Message" placeholder="Enter a message..." />
+    </FormGroup>
+    <Button type="submit">Send</Button>
+  </Form>
+</Tile>
 <Tile>
   <h1>Chatrooms (text)</h1>
 </Tile>

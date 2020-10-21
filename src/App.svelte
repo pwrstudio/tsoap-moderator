@@ -9,7 +9,6 @@
   import { onMount } from "svelte"
   import * as Colyseus from "colyseus.js"
   import get from "lodash/get"
-  import { fade, fly } from "svelte/transition"
   import { loadData, client } from "./sanity.js"
   import { Router, Route, links } from "svelte-routing"
   import {
@@ -171,15 +170,15 @@
     })
 
     // SUBMIT CHAT
-    // submitChat = event => {
-    //   chatRoom.send("submit", {
-    //     msgId: chance.guid(),
-    //     uuid: $localUserUUID,
-    //     name: $localUserName,
-    //     text: event.detail.text,
-    //     tint: $localUserTint
-    //   });
-    // };
+    submitChat = event => {
+      // chatRoom.send("submit", {
+      //   msgId: chance.guid(),
+      //   uuid: chance.guid(),
+      //   name: $localUserName,
+      //   text: event.detail.text,
+      //   tint: $localUserTint
+      // });
+    };
   })
 </script>
 
@@ -222,7 +221,23 @@
         <Banned {blackList} />
       </Route>
       <Route path="/textchat">
-        <Textchat {chatMessages} />
+        {#await userList then userList}
+          <Textchat {chatMessages} 
+            users={userList} 
+            on:message={event=> {
+              console.dir(event.detail)
+              $gameRoom.send("submitChatMessage", {
+                msgId: chance.guid(),
+                uuid: chance.guid(),
+                directed: get(event, 'detail.recipient', ''),
+                name: 'Moderator',
+                username: 'moderator',
+                authenticated: false,
+                room: 1,
+                text: get(event, 'detail.message', ''),
+              });
+          }}/>
+        {/await}
       </Route>
       <Route path="/audiochat">
         <Audiochat />
