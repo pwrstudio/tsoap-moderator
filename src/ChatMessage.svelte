@@ -73,14 +73,22 @@
   code {
     font-size: 0.65rem;
   }
+
+  .broadcast {
+    background: lightyellow;
+  }
+
+  .narrowcast {
+    background: lightgreen;
+  }
 </style>
 
 <div transition:fade|local>
   <Tile>
-    <div class="container">
+    <div class="container" class:broadcast={message.directed && message.directedTo === 'all'} class:narrowcast={message.directed && message.directedTo !== 'all'} >
       <div class="meta">
         <div class="date">
-          <code>{formattedDate(message.timestamp)} => Room {message.room}</code>
+          <code>{formattedDate(message.timestamp)} => Room {(message.directed && message.directedTo !== 'all') ? message.directedTo : message.room}</code>
         </div>
         <div class="name"><strong>{message.name}</strong></div>
         <div class="body">{message.text}</div>
