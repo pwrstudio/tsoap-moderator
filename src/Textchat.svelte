@@ -30,6 +30,7 @@
 
   // *** VARIBALES
   let message = ''
+  let messageSent = false
   let recipient = "all"
 
   console.dir(users)
