@@ -229,7 +229,8 @@
               $gameRoom.send("submitChatMessage", {
                 msgId: chance.guid(),
                 uuid: chance.guid(),
-                directed: get(event, 'detail.recipient', ''),
+                directed: true,
+                directedTo: get(event, 'detail.recipient', ''),
                 name: 'Moderator',
                 username: 'moderator',
                 authenticated: false,

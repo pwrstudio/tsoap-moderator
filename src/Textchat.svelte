@@ -15,7 +15,8 @@
     Select,
     SelectItem,
     Button,
-    TextArea
+    TextArea,
+    InlineNotification 
   } from "carbon-components-svelte"
   import { createEventDispatcher } from 'svelte';
 
@@ -39,6 +40,10 @@
       message: message,
       recipient: recipient
     });
+    messageSent = true
+    setTimeout(() => {
+      messageSent = false
+    }, 5000)
   }
 </script>
 
@@ -62,6 +67,12 @@
       <TextArea bind:value={message} labelText="Message" placeholder="Enter a message..." />
     </FormGroup>
     <Button type="submit">Send</Button>
+    {#if messageSent}
+      <InlineNotification
+          kind="success"
+          title="Message sent"
+        />
+    {/if}
   </Form>
 </Tile>
 <Tile>
